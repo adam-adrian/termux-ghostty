@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - master
+      - v4.13.1-patch
       - 'github-releases/**'
   pull_request:
     branches:
