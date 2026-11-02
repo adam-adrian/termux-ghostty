@@ -83,7 +83,7 @@ android {
 
 def termuxGhosttyVariants = [
     [name: 'debug', taskSuffix: 'Debug', optimize: 'Debug', logEnabled: 'true'],
-    [name: 'release', taskSuffix: 'Release', optimize: 'ReleaseSmall', logEnabled: 'false'],
+    [name: 'release', taskSuffix: 'Release', optimize: 'ReleaseFast', logEnabled: 'false'],
 ]
 
 def termuxGhosttyZigProjectDir = file('src/main/zig')
@@ -173,11 +173,17 @@ termuxGhosttyVariants.each { variantConfig ->
             description = "Build libtermux-ghostty.so for ${variantConfig.name}/${abiConfig.abi}"
             workingDir termuxGhosttyZigProjectDir
             executable resolveTermuxGhosttyZigExecutable()
-            args 'build',
+            def zigArgs = [
+                'build',
                 "-Dtarget=${abiConfig.target}",
                 "-Doptimize=${resolveTermuxGhosttyOptimize(variantConfig)}",
                 "-Dghostty-log=${resolveTermuxGhosttyLogEnabled(variantConfig)}",
                 '--prefix', installDir.absolutePath
+            ]
+            if (abiConfig.abi == 'arm64-v8a') {
+                zigArgs.add('-Dcpu=cortex_a720')
+            }
+            args zigArgs
 
             inputs.files(termuxGhosttyInputs)
             inputs.property('zigExecutable', project.providers.provider { resolveTermuxGhosttyZigExecutablePath() })

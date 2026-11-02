@@ -40,7 +40,7 @@
               overlays = [ zig-overlay.overlays.default ];
             };
             androidSdk = android-nixpkgs.sdk.${system} (sdkPkgs: with sdkPkgs; [
-              cmdline-tools-latest
+              cmdline-tools-22-0
               platform-tools
               build-tools-35-0-0
               build-tools-36-0-0
@@ -48,6 +48,7 @@
               platforms-android-35
               platforms-android-36
               platforms-android-37-0
+              platforms-android-37-1
               ndk-29-0-14206865
               cmake-3-22-1
               emulator

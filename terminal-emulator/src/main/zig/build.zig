@@ -48,7 +48,7 @@ pub fn build(b: *std.Build) !void {
     if (b.lazyDependency("ghostty", .{
         .target = target,
         .optimize = optimize,
-        .simd = false,
+        .simd = true,
     })) |ghostty_dep| {
         const ghostty_module = ghostty_dep.module("ghostty-vt");
         root_module.addImport("ghostty-vt", ghostty_module);

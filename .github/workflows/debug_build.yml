@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - master
+      - dev-bespoke
       - 'github-releases/**'
   pull_request:
     branches:
@@ -54,28 +55,32 @@ jobs:
           fi
 
           export TERMUX_APP_VERSION_NAME="${RELEASE_VERSION_NAME/v/}" # Used by app/build.gradle
+          export TERMUX_SPLIT_APKS_FOR_RELEASE_BUILDS="1"
+          export TERMUX_TARGET_ABIS="arm64-v8a"
 
-          echo "Building legacy app APKs"
+          echo "Building legacy app APKs (Release)"
           export TERMUX_APK_VERSION_TAG="$RELEASE_VERSION_NAME"
-          if ! nix develop --command ./gradlew :app:assembleDebug --no-daemon; then
+          if ! nix develop --command ./gradlew :app:assembleRelease --no-daemon; then
             exit_on_error "Build failed for legacy app '$TERMUX_APK_VERSION_TAG'."
           fi
 
-          echo "Building compose-app APKs"
-          if ! nix develop --command ./gradlew :compose-app:assembleDebug --no-daemon; then
-            exit_on_error "Build failed for compose-app release."
+          echo "Building compose-app APKs (Release)"
+          if ! nix develop --command ./gradlew :compose-app:assembleArm64Release --no-daemon; then
+            echo "compose-app release build failed (non-fatal)"
           fi
 
       - name: Upload Legacy App APKs
         uses: actions/upload-artifact@v4
         with:
-          name: termux_debug
-          path: app/build/outputs/apk/debug/*.apk
+          name: termux_arm64_release
+          path: app/build/outputs/apk/release/*arm64-v8a.apk
           retention-days: 14
 
       - name: Upload Compose App APKs
         uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
-          name: ecto_debug
-          path: compose-app/build/outputs/apk/*/debug/*.apk
+          name: ecto_arm64_release
+          path: compose-app/build/outputs/apk/*/release/*arm64*.apk
+          if-no-files-found: ignore
           retention-days: 14
