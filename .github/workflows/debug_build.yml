@@ -82,4 +82,3 @@ jobs:
           path: compose-app/build/outputs/apk/*/debug/*.apk
           if-no-files-found: ignore
           retention-days: 14
-          retention-days: 14
