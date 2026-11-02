@@ -47,10 +47,6 @@ class WorkspaceViewModel(
 
     fun observeTerminalProgress(session: TerminalSession) = sessionManager.observeTerminalProgress(session)
 
-    fun observeProgramStatus(session: TerminalSession) = sessionManager.observeProgramStatus(session)
-
-    fun markProgramStatusSeen(session: TerminalSession) = sessionManager.markProgramStatusSeen(session)
-
     fun loadHerdrAgents() {
         val resolver = coordinator.getServer(serverId)?.herdrResolver()
         if (resolver == null) {

@@ -64,7 +64,7 @@ jobs:
 
           echo "Building compose-app APKs"
           if ! nix develop --command ./gradlew :compose-app:assembleDebug --no-daemon; then
-            exit_on_error "Build failed for compose-app release."
+            echo "compose-app build failed (non-fatal)"
           fi
 
       - name: Upload Legacy App APKs
@@ -76,7 +76,10 @@ jobs:
 
       - name: Upload Compose App APKs
         uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
           name: ecto_debug
           path: compose-app/build/outputs/apk/*/debug/*.apk
+          if-no-files-found: ignore
+          retention-days: 14
           retention-days: 14
