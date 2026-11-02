@@ -253,12 +253,8 @@ internal class TerminalInputConnection(
 }
 
 internal fun EditorInfo.configureForTerminal(acceptsCommitContent: Boolean) {
-    inputType = InputType.TYPE_CLASS_TEXT or
-        InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD or
-        InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
-    imeOptions = EditorInfo.IME_ACTION_NONE or
-        EditorInfo.IME_FLAG_FORCE_ASCII or
-        EditorInfo.IME_FLAG_NO_FULLSCREEN
+    inputType = InputType.TYPE_NULL
+    imeOptions = EditorInfo.IME_FLAG_NO_FULLSCREEN
     initialSelStart = 0
     initialSelEnd = 0
     if (acceptsCommitContent) {

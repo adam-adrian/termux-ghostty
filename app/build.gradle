@@ -116,7 +116,11 @@ android {
                 }
                 if (ksFile.exists()) {
                     signingConfig signingConfigs.release
+                } else {
+                    signingConfig signingConfigs.debug
                 }
+            } else {
+                signingConfig signingConfigs.debug
             }
         }
 
