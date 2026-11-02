@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - master
+      - dev
       - 'github-releases/**'
   pull_request:
     branches:
